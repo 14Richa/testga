@@ -38,10 +38,6 @@ name: ci-tests
 #       - name: Close Pull Request
 #         run: | 
 #           echo " PR Closed."
-
-
-# name: Close Pull Request
-
 on:
   pull_request_target:
     types: [opened]
