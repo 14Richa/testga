@@ -46,7 +46,7 @@ jobs:
   run:
     runs-on: ubuntu-20.04
     steps:
-    - uses: actions/close-pull-request@v3
+    - uses: actions/close-pull@v3
       with:
         # Optional. Post a issue comment just before closing a pull request.
-        comment: "Pr closed."
+        comment: Pr closed.
