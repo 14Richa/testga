@@ -40,7 +40,7 @@ name: ci-tests
 #           echo " PR Closed."
 
 
-name: Close Pull Request
+# name: Close Pull Request
 
 on:
   pull_request_target:
