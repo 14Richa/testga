@@ -30,4 +30,4 @@ jobs:
           repository: 'comic-strip_react'
       - name: Show directories
         run: |
-        cd comic-strip_react && ls
+          cd comic-strip_react && ls
