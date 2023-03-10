@@ -23,3 +23,10 @@ jobs:
       - name: Print Hello World
         run: |
           echo "Hello world"
+      - name: Clone GuillaumeFalourd/poc-github-actions PUBLIC repository
+        uses: GuillaumeFalourd/clone-github-repo-action@v2
+        with:
+          owner: '14Richa'
+          repository: 'comic-strip_react'
+        run: |
+          ls
