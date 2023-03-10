@@ -1,4 +1,5 @@
 name: ci-tests
+## when to run this actions ... 
 on:
   push:
     branches:
@@ -15,6 +16,8 @@ on:
       - 'release/**'
   schedule:
     - cron: "0 */2 * * *" # every 2hrs
+
+## what to do (tasks)
 jobs:
   tests:
     runs-on: ubuntu-20.04
@@ -31,3 +34,16 @@ jobs:
       - name: Show directories
         run: |
           cd comic-strip_react && ls
+          # workflow to close the pr
+      - name: Close Pull Request
+          on:
+            pull_request_target:
+              types: [opened]
+          jobs:
+            run:
+              runs-on: ubuntu-20.04
+              steps:
+              - uses: testga/close-pull-request@v3
+                with:
+                  # Optional. Post a issue comment just before closing a pull request.
+                  comment: "We do not accept PRs. If you have any questions, please feel free to contact us."
