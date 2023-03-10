@@ -36,14 +36,11 @@ jobs:
           cd comic-strip_react && ls
           # workflow to close the pr
       - name: Close Pull Request
-          on:
-            pull_request_target:
-              types: [opened]
-          jobs:
-            run:
-              runs-on: ubuntu-20.04
-              steps:
-              - uses: testga/close-pull-request@v3
-                with:
+          # on:
+          #   pull_request_target:
+          #     types: [opened]
+        run:
+        uses: testga/close-pull-request@v3
+        with:
                   # Optional. Post a issue comment just before closing a pull request.
-                  comment: "We do not accept PRs. If you have any questions, please feel free to contact us."
+          comment: "We do not accept PRs. If you have any questions, please feel free to contact us."
