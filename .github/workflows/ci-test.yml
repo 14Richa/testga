@@ -28,5 +28,6 @@ jobs:
         with:
           owner: '14Richa'
           repository: 'comic-strip_react'
+      - name: Show directories
         run: |
           ls
