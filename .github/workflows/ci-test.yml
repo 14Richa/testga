@@ -1,0 +1,25 @@
+name: ci-tests
+on:
+  push:
+    branches:
+      - main
+      - 'release/**'
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - ready_for_review
+    branches:
+      - main
+      - 'release/**'
+  schedule:
+    - cron: "0 */2 * * *" # every 2hrs
+jobs:
+  tests:
+    runs-on: ubuntu20.04
+    steps:
+      - uses: actions/checkout@v3
+      - name: Print Hello World
+        run: |
+          echo "Hello world"
