@@ -39,6 +39,6 @@ jobs:
           # on:
           #   pull_request_target:
           #     types: [opened]
-        uses: actions/checkout@v3
+        # uses: actions/checkout@v3
         run: | 
           echo "We do not accept PRs."
