@@ -39,31 +39,31 @@
 #         run: | 
 #           echo " PR Closed."
 
-name: automerge
+name: PR Closed
+
 on:
   pull_request:
-    types:
-      - labeled
-      - unlabeled
-      - synchronize
-      - opened
-      - edited
-      - ready_for_review
-      - reopened
-      - unlocked
-  pull_request_review:
-    types:
-      - submitted
-  check_suite:
-    types:
-      - completed
-  status: {}
+    types: [closed]
+
 jobs:
-  automerge:
+  pr-closed:
     runs-on: ubuntu-20.4
     steps:
-      - id: automerge
-        name: automerge
-        uses: "14Richa/automerge-action@v0.15.6"
-        env:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+      - name: Check if PR was merged
+        id: merged
+        run: |
+          if [ "${{ github.event.pull_request.merged }}" = "true" ]; then
+            echo "::set-output name=merged::true"
+          else
+            echo "::set-output name=merged::false"
+          fi
+      - name: Add welcome comment
+        if: steps.merged.outputs.merged == 'true'
+        uses: actions/github-script@v4
+        with:
+          # github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const issue = context.issue;
+            const message = "welcome";
+            github.issues.createComment({...issue, body: message});
+
