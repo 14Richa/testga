@@ -43,10 +43,11 @@ name: PR Closed
 
 on:
   pull_request:
-    types: [closed]
+    types:
+      - closed
 
 jobs:
-  pr-closed:
+  tests:
     runs-on: ubuntu-20.4
     steps:
       - name: Check if PR was merged
@@ -61,7 +62,7 @@ jobs:
         if: steps.merged.outputs.merged == 'true'
         uses: actions/github-script@v4
         with:
-          # github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const issue = context.issue;
             const message = "welcome";
