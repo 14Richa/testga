@@ -1,28 +1,13 @@
-name: PR Closed
+name: Check PR Merge Status
 
 on:
   pull_request:
-    types:
-      - closed
+    types: [closed]
 
 jobs:
-  tests:
+  check_merge_status:
     runs-on: ubuntu-20.4
     steps:
       - name: Check if PR was merged
-        id: merged
-        run: |
-          if [ "${{ github.event.pull_request.merged }}" = "true" ]; then
-            echo "::set-output name=merged::true"
-          else
-            echo "::set-output name=merged::false"
-      - name: Add welcome comment
-        if: steps.merged.outputs.merged == 'true'
-        uses: actions/github-script@v4
-        with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const issue = context.issue;
-            const message = "welcome";
-            github.issues.createComment({...issue, body: message});
-
+        if: github.event.pull_request.merged == true
+        run: echo "Welcome"
