@@ -57,7 +57,6 @@ jobs:
             echo "::set-output name=merged::true"
           else
             echo "::set-output name=merged::false"
-          fi
       - name: Add welcome comment
         if: steps.merged.outputs.merged == 'true'
         uses: actions/github-script@v4
