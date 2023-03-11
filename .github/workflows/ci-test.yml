@@ -1,56 +1,13 @@
-name: ci-tests
-## when to run this actions ... 
-# on:
-#   push:
-#     branches:
-#       - main
-#       - 'release/**'
-#   pull_request:
-#     types:
-#       - opened
-#       - reopened
-#       - synchronize
-#       - ready_for_review
-#     branches:
-#       - main
-#       - 'release/**'
-#   schedule:
-#     - cron: "0 */2 * * *" # every 2hrs
-
-## what to do (tasks)
-# jobs:
-#   tests:
-#     runs-on: ubuntu-20.04
-#     steps:
-#       - uses: actions/checkout@v3
-#       - name: Print Hello World
-#         run: |
-#           echo "Hello world"
-#       - name: Clone GuillaumeFalourd/poc-github-actions PUBLIC repository
-#         uses: GuillaumeFalourd/clone-github-repo-action@v2
-#         with:
-#           owner: '14Richa'
-#           repository: 'comic-strip_react'
-#       - name: Show directories
-#         run: |
-#           cd comic-strip_react && ls
-#           # workflow to close the pr
-#       - name: Close Pull Request
-#         run: | 
-#           echo " PR Closed."
-
-
-# name: Close Pull Request
+name: Check PR Merge Status
 
 on:
-  pull_request_target:
-    types: [opened]
+  pull_request:
+    types: [closed]
 
 jobs:
-  run:
-    runs-on: ubuntu-20.04
+  check_merge_status:
+    runs-on: ubuntu-latest
     steps:
-    - uses: actions/close-pull-request@v3
-      with:
-        # Optional. Post a issue comment just before closing a pull request.
-        comment: "Pr closed."
+      - name: Check if PR was merged
+        if: github.event.pull_request.merged == true
+        run: echo "Welcome"
