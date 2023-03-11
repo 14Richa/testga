@@ -26,3 +26,6 @@ jobs:
             const issue = context.issue;
             const message = "welcome";
             github.issues.createComment({...issue, body: message}); 
+
+
+
