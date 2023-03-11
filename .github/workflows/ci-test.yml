@@ -13,9 +13,10 @@ jobs:
         id: merged
         run: |
           if [ "${{ github.event.pull_request.merged }}" = "true" ]; then
-            echo "::set-output name=merged::true"
+            echo "::set-output name=merged::true";
           else
-            echo "::set-output name=merged::false"
+            echo "::set-output name=merged::false";
+          fi;
       - name: Add welcome comment
         if: steps.merged.outputs.merged == 'true'
         uses: actions/github-script@v4
