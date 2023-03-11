@@ -1,44 +1,3 @@
-# name: ci-tests
-## when to run this actions ... 
-# on:
-#   push:
-#     branches:
-#       - main
-#       - 'release/**'
-#   pull_request:
-#     types:
-#       - opened
-#       - reopened
-#       - synchronize
-#       - ready_for_review
-#     branches:
-#       - main
-#       - 'release/**'
-#   schedule:
-#     - cron: "0 */2 * * *" # every 2hrs
-
-## what to do (tasks)
-# jobs:
-#   tests:
-#     runs-on: ubuntu-20.04
-#     steps:
-#       - uses: actions/checkout@v3
-#       - name: Print Hello World
-#         run: |
-#           echo "Hello world"
-#       - name: Clone GuillaumeFalourd/poc-github-actions PUBLIC repository
-#         uses: GuillaumeFalourd/clone-github-repo-action@v2
-#         with:
-#           owner: '14Richa'
-#           repository: 'comic-strip_react'
-#       - name: Show directories
-#         run: |
-#           cd comic-strip_react && ls
-#           # workflow to close the pr
-#       - name: Close Pull Request
-#         run: | 
-#           echo " PR Closed."
-
 name: PR Closed
 
 on:
@@ -61,7 +20,7 @@ jobs:
         if: steps.merged.outputs.merged == 'true'
         uses: actions/github-script@v4
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const issue = context.issue;
             const message = "welcome";
