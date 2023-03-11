@@ -39,24 +39,31 @@
 #         run: | 
 #           echo " PR Closed."
 
-
-name: Close Pull Request
-
+name: automerge
 on:
   pull_request:
-    types: [opened]
-
+    types:
+      - labeled
+      - unlabeled
+      - synchronize
+      - opened
+      - edited
+      - ready_for_review
+      - reopened
+      - unlocked
+  pull_request_review:
+    types:
+      - submitted
+  check_suite:
+    types:
+      - completed
+  status: {}
 jobs:
-  close-pr:
-    runs-on: ubuntu-latest
+  automerge:
+    runs-on: ubuntu-20.4
     steps:
-      - name: Close PR
-        uses: actions/github-script@v4
-        with:
-          script: |
-            github.pulls.update({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: context.payload.pull_request.number,
-              state: "closed"
-            })
+      - id: automerge
+        name: automerge
+        uses: "testga/automerge-action@v0.15.6"
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
