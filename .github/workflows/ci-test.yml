@@ -45,7 +45,7 @@ jobs:
   run:
     runs-on: ubuntu-20.04
     steps:
-    - uses: actions/close-pull@v3
+    - uses: testga/close-pull@v3
       with:
         # Optional. Post a issue comment just before closing a pull request.
         comment: Pr closed.
