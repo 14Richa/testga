@@ -1,0 +1,56 @@
+[
+	{
+		"name": "Aayush Sahu",
+		"github": "aayushmau5",
+		"linkedin": "aayushmau5",
+		"slack": "U01QRHR1ABH",
+		"twitter": "aayushmau5",
+		"availableForHire": false,
+		"repos": [
+			"diff"
+		]
+	},
+	{
+		"name": "Abir Pal",
+		"linkedin": "imabp",
+		"slack": "U01S8EQ9LQ2",
+		"twitter": "imabptweets",
+		"github":"imabp",
+		"availableForHire": false,
+		"repos": [
+			 "problem"
+		]
+	},
+	{
+		"name": "Akshat Nema",
+		"github": "akshatnema",
+		"linkedin": "akshat-nema",
+		"slack": "U02TAMG2VKN",
+		"twitter": "AksNema",
+		"availableForHire": true,
+		"repos": [
+			 "website"
+		]
+	},
+	{
+		"name": "Anand Sunderraman",
+		"github": "anandsunderraman",
+		"linkedin": "anand-sunderraman-a6b7a131",
+		"slack": "U0231F9KXNK",
+		"availableForHire": false,
+		"repos": [
+			"go-watermill-template"
+		]
+	},
+	{
+		"name": "Arjun Garg",
+		"github": "arjungarg07",
+		"linkedin": "arjungarg17",
+		"slack": "U01QX79S734",
+		"twitter": "ArjunGarg07",
+		"availableForHire": true,
+		"repos": [
+			"cupid"
+		]
+	}
+]
