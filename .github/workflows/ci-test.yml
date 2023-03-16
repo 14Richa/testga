@@ -10,6 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check if new member
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         uses: actions/github-script@v3
         with:
           script: |
@@ -20,9 +22,10 @@ jobs:
             const prAuthor = context.payload.pull_request.user.login;
             const isMember = contributors.data.some(c => c.login === prAuthor);
             core.setOutput('isMember', isMember);
-          env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
       - name: Send message to new member
+        env:
+           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         if: steps.check_if_new_member.outputs.isMember == 'true' && github.event.pull_request.merged == true
         uses: actions/github-script@v3
         with:
@@ -35,5 +38,4 @@ jobs:
               issue_number: prNumber,
               body: message,
             });
-          env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+         
