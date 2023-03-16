@@ -1,87 +1,38 @@
-# name: PR Closed
 
-# on:
-#   pull_request:
-#     types:
-#       - closed
-
-# jobs:
-#   tests:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Check if PR was merged
-#         id: merged
-#         run: |
-#           if [[ "${{ github.event.pull_request.merged }}" = "true" ]]; then
-#             echo "::set-output name=merged::true";
-#           else
-#             echo "::set-output name=merged::false";
-#           fi;
-#       - name: Add welcome comment
-#         if: steps.merged.outputs.merged == 'true'
-#         uses: actions/github-script@v4
-#         with:
-#           repo-token: ${{ secrets.GITHUB_TOKEN }}
-#           script: |
-#             const issue = context.issue;
-#             const message = "welcome";
-#             github.issues.createComment({...issue, body: message}); 
-
-
-
-name: PR closed
+name: Send message to new member
 
 on:
   pull_request:
     types: [closed]
-
-jobs:
-  check_pr:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check if PR was merged
-        uses: actions/github-script@v4
-        with:
-          script: |
-            const prNumber = context.payload.pull_request.number;
-            const response = await github.pulls.get({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: prNumber
-            });
-            return response.data.merged;
-        id: pr_merged
-
-      - name: Check if PR has new members
-        uses: actions/github-script@v4
-        if: steps.pr_merged.outputs.result == 'true'
-        with:
-          script: |
-            const prNumber = context.payload.pull_request.number;
-            const response = await github.pulls.listCommits({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: prNumber
-            });
-            const emails = new Set();
-            for (const commit of response.data) {
-              const authorEmail = commit.author.email;
-              if (!emails.has(authorEmail)) {
-                emails.add(authorEmail);
-              }
-            }
-            return emails.size > 1;
-        id: pr_has_new_members
-
-      - name: Add welcome comment
-        uses: actions/github-script@v4
-        if: steps.pr_has_new_members.outputs.result == 'true'
-        with:
-          script: |
-            const prNumber = context.payload.pull_request.number;
-            const response = await github.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: prNumber,
-              body: 'Welcome!'
-            });
+  push:
+    branches:
+      - main
+steps:
+  - name: Check if new member
+    uses: actions/github-script@v3
+    with:
+      script: |
+        const contributors = await github.repos.listContributors({
+          owner: context.repo.owner,
+          repo: context.repo.repo,
+        });
+        const prAuthor = context.payload.pull_request.user.login;
+        const isMember = contributors.data.some(c => c.login === prAuthor);
+        core.setOutput('isMember', isMember);
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  - name: Send message to new member
+    if: steps.check_if_new_member.outputs.isMember == 'true' && github.event.pull_request.merged == true
+    uses: actions/github-script@v3
+    with:
+      script: |
+        const prNumber = context.payload.pull_request.number;
+        const message = 'Congratulations on your first merged Pull Request! Thanks for your contribution.';
+        await github.issues.createComment({
+          owner: context.repo.owner,
+          repo: context.repo.repo,
+          issue_number: prNumber,
+          body: message,
+        });
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
