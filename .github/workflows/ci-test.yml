@@ -74,7 +74,6 @@ jobs:
       - name: Comment on Pull Request
         uses: actions/github-script@v4
         with:
-          github-token: ${{ secrets.TEST_SECRET_TOKEN}}
           script: |
             github.issues.createComment({
               issue_number: context.issue.number,
@@ -82,3 +81,7 @@ jobs:
               repo: context.repo.repo,
               body: 'Welcome to our project, @' + context.payload.pull_request.user.login + '! Thank you for your contribution.'
             });
+        env: 
+          GITHUB_TOKEN: ${{secrets.TEST_SECRET_TOKEN}}
+
+
