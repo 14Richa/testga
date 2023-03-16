@@ -3,8 +3,8 @@ name: Welcome New Contributor
 on:
   pull_request:
     types: [closed, opened]
-  paths:
-    - 'TSC_MEMBERS.json' 
+    paths:
+      - 'TSC_MEMBERS.json' 
 
 jobs:
   welcome:
