@@ -38,10 +38,32 @@
 #           env:
 #             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+### PRINT IT ON BASH
+
+# name: Welcome New Contributor
+# on:
+#   pull_request:
+#     types: [closed]
+# jobs:
+#   welcome:
+#     if: github.event.pull_request.merged && github.event.pull_request.user.login != github.event.repository.owner.login
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v2
+#       - name: Print welcome message
+#         run: |
+#           echo "Welcome to our project, @${{ github.event.pull_request.user.login }}! Thank you for your contribution."
+
+
+# PRINT IT ON PR ITSELF 
+
 name: Welcome New Contributor
+
 on:
   pull_request:
     types: [closed]
+
 jobs:
   welcome:
     if: github.event.pull_request.merged && github.event.pull_request.user.login != github.event.repository.owner.login
@@ -49,6 +71,14 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Print welcome message
-        run: |
-          echo "Welcome to our project, @${{ github.event.pull_request.user.login }}! Thank you for your contribution."
+      - name: Comment on Pull Request
+        uses: actions/github-script@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: 'Welcome to our project, @' + context.payload.pull_request.user.login + '! Thank you for your contribution.'
+            });
