@@ -66,7 +66,8 @@ on:
 
 jobs:
   welcome:
-    if: github.event.pull_request.merged && github.event.pull_request.user.login != github.event.repository.owner.login
+    if: github.event.pull_request.merged 
+      # && github.event.pull_request.user.login != github.event.repository.owner.login
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -74,14 +75,23 @@ jobs:
       - name: Comment on Pull Request
         uses: actions/github-script@v4
         with:
+          github-token: ${{ secrets.TEST_SECRET_TOKEN}}
+          # script: |
+          #   github.issues.createComment({
+          #     issue_number: context.issue.number,
+          #     owner: context.repo.owner,
+          #     repo: context.repo.repo,
+          #     body: 'Welcome to our project, @' + context.payload.pull_request.user.login + '! Thank you for your contribution.'
+          #   });
+
           script: |
             github.issues.createComment({
-              issue_number: context.issue.number,
+              issue_number: ${{github.event.inputs.pr}},
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: 'Welcome to our project, @' + context.payload.pull_request.user.login + '! Thank you for your contribution.'
+              body: 'Hey, @${{github.actor}} PR Preview Build succeeded!',
             });
-        env: 
-          GITHUB_TOKEN: ${{secrets.TEST_SECRET_TOKEN}}
+
+       
 
 
