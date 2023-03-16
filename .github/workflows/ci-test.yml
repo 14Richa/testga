@@ -1,6 +1,4 @@
-
 name: Send message to new member
-
 on:
   pull_request:
     types: [closed]
