@@ -86,7 +86,7 @@ jobs:
 
           script: |
             github.issues.createComment({
-              issue_number: ${{github.event.inputs.pr}},
+              issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
               body: 'Hey, @${{github.actor}} PR Preview Build succeeded!',
