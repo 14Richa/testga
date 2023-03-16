@@ -62,20 +62,23 @@ name: Welcome New Contributor
 
 on:
   pull_request:
-    types: [closed]
+    types: [closed, opened]
+  paths:
+      - 'TSC_MEMBERS.json' 
 
 jobs:
   welcome:
-    if: github.event.pull_request.merged 
-      # && github.event.pull_request.user.login != github.event.repository.owner.login
+    # if: github.event.pull_request.merged && github.event.pull_request.user.login != github.event.repository.owner.login
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Comment on Pull Request
-        uses: actions/github-script@v4
+        # parentRepo1 repo clone
+      - name: Checkout parentRepo1 
+        uses: actions/checkout@v3
         with:
-          github-token: ${{ secrets.TEST_SECRET_TOKEN}}
+          repository: 14Richa/parentRepo1
+          path: parentRepo1
           # script: |
           #   github.issues.createComment({
           #     issue_number: context.issue.number,
@@ -83,14 +86,10 @@ jobs:
           #     repo: context.repo.repo,
           #     body: 'Welcome to our project, @' + context.payload.pull_request.user.login + '! Thank you for your contribution.'
           #   });
-
-          script: |
-            github.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: 'Hey, @${{github.actor}} PR Preview Build succeeded!',
-            });
+      - name: Run script
+        run: | 
+          ls 
+          cat parentRepo1/config/TSC_MEMBERS.json
 
        
 
