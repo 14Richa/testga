@@ -39,11 +39,9 @@
 #             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 name: Welcome New Contributor
-
 on:
   pull_request:
     types: [closed]
-
 jobs:
   welcome:
     if: github.event.pull_request.merged && github.event.pull_request.user.login != github.event.repository.owner.login
