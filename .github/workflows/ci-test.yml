@@ -16,14 +16,14 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Install dependencies
-        run: npm install
         # parentRepo1 repo clone
       - name: Checkout parentRepo1 
         uses: actions/checkout@v3
         with:
           repository: 14Richa/parentRepo1
           path: parentRepo1
+      - name: Install dependencies
+        run: npm install
       - name: Compare files
         run: |
           differences=$(jq -s '.[0] - .[1] | {name: .name}' config/TSC_MEMBER.json parentRepo1/config/TSC_MEMBER.json)
