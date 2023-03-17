@@ -21,6 +21,7 @@ jobs:
           path: parentRepo1
       - name: Run script
         run: | 
+          cd parentRepo1
           ls 
           cat parentRepo1/config/TSC_MEMBERS.json
 
