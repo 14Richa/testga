@@ -28,6 +28,7 @@ jobs:
           path: parentRepo1
       - name: Compare files
         id: compare-files
+        uses: actions/github-script@v4
         script: |
           const fs = require("fs");
           const origMembers = JSON.parse(fs.readFileSync("parentRepo1/config/TSC_MEMBER.json"));
