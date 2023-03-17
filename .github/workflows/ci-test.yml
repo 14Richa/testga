@@ -16,15 +16,21 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+      - name: Install Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
         # parentRepo1 repo clone
       - name: Checkout parentRepo1 
         uses: actions/checkout@v3
         with:
           repository: 14Richa/parentRepo1
           path: parentRepo1
-      - name: Run script
-        run: | 
-          tree .
-       
+      - name: Compare files
+        run: |
+          node compare_files.js
+      - name: Display welcome message
+        if: ${{ steps.compare-files.outputs.diff == 'true' }}
+        run: echo "Welcome!"
 
 
