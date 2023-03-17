@@ -49,8 +49,8 @@ jobs:
             console.log("Removed objects:", removed);
       - name: Print Values
         run: |
-          echo ${steps.compare-files.outputs.added}
-          echo ${steps.compare-files.outputs.removed}
+          echo ${{steps.compare-files.outputs.added}}
+          echo ${{steps.compare-files.outputs.removed}}
       - name: Display welcome message
         if: ${{ steps.compare-files.outputs.added == 'true' }}
         run: echo "Welcome!"
