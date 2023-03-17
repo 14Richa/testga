@@ -16,10 +16,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Install Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14'
+      - name: Install dependencies
+        run: npm install
         # parentRepo1 repo clone
       - name: Checkout parentRepo1 
         uses: actions/checkout@v3
@@ -27,10 +25,10 @@ jobs:
           repository: 14Richa/parentRepo1
           path: parentRepo1
       - name: Compare files
-        run: |
-          node compare_files.js
-      - name: Display welcome message
-        if: ${{ steps.compare-files.outputs.diff == 'true' }}
-        run: echo "Welcome!"
-
+          run: |
+          differences=$(jq -s '.[0] - .[1] | {name: .name}' config/TSC_MEMBER.json parentRepo1/config/TSC_MEMBER.json)
+          if [ -n "$differences" ]; then
+            echo "The following changes were made"
+            echo "$differences"
+          fi
 
