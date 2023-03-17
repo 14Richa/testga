@@ -34,8 +34,8 @@ jobs:
             const fs = require("fs");
             const origMembers = JSON.parse(fs.readFileSync("parentRepo1/config/TSC_MEMBER.json"));
             const newMembers = JSON.parse(fs.readFileSync("config/TSC_MEMBER.json"));
-            console.log("FILE1", file1);
-            console.log("FILE2", file2);
+            console.log("FILE1", origMembers);
+            console.log("FILE2", newMembers);
   
             const added = newMembers.filter(
               (newObj) => !origMembers.some((oldObj) => oldObj.name === newObj.name)
