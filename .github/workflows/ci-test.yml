@@ -26,9 +26,9 @@ jobs:
           path: parentRepo1
       - name: Compare files
           run: |
-          differences=$(jq -s '.[0] - .[1] | {name: .name}' config/TSC_MEMBER.json parentRepo1/config/TSC_MEMBER.json)
-          if [ -n "$differences" ]; then
-            echo "The following changes were made"
-            echo "$differences"
-          fi
+            differences=$(jq -s '.[0] - .[1] | {name: .name}' config/TSC_MEMBER.json parentRepo1/config/TSC_MEMBER.json)
+            if [ -n "$differences" ]; then
+              echo "The following changes were made"
+              echo "$differences"
+            fi
 
