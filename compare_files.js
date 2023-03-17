@@ -12,15 +12,25 @@
 //   console.log("::set-output name=diff::false");
 // }
 
-const oldList = "parentRepo1/config/TSC_MEMBER.json";
-const newList = "config/TSC_MEMBER.json";
+const fs = require("fs");
 
-const added = newList.filter(
-  (newObj) => !oldList.some((oldObj) => oldObj.name === newObj.name)
-);
-const removed = oldList.filter(
-  (oldObj) => !newList.some((newObj) => newObj.name === oldObj.name)
-);
+// Read the contents of the two JSON files
+const file1 = JSON.parse(fs.readFileSync("parentRepo1/config/TSC_MEMBER.json"));
+const file2 = JSON.parse(fs.readFileSync("config/TSC_MEMBER.json"));
 
-console.log("Added objects:", added);
-console.log("Removed objects:", removed);
+// Compare the two JSON files via the "name" field
+const differences = file1.filter((obj1) => {
+  const obj2 = file2.find((obj2) => obj1.name === obj2.name);
+  if (obj2) {
+    return JSON.stringify(obj1) !== JSON.stringify(obj2);
+  }
+  return true;
+});
+
+// If the differences array is not empty, print the differences
+if (differences.length) {
+  console.log("The following differences:");
+  console.log(differences);
+} else {
+  console.log("The files are identical.");
+}
