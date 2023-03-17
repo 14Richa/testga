@@ -27,6 +27,7 @@ jobs:
           repository: 14Richa/parentRepo1
           path: parentRepo1
       - name: Compare files
+        id: compare-files
         script: |
           const fs = require("fs");
           const origMembers = JSON.parse(fs.readFileSync("parentRepo1/config/TSC_MEMBER.json"));
@@ -40,16 +41,19 @@ jobs:
           const removed = origMembers.filter(
             (oldObj) => !newMembers.some((newObj) => newObj.name === oldObj.name)
           );
-          if(added.length > 0) return ::set-output name=diff::true;
-          if(removed.length > 0) return ::set-output name=diff::false;
-
+          if(added.length > 0)  console.log(`::set-output name=added::true`);
+          if(removed.length > 0) console.log(`::set-output name=removed::true`);
           console.log("Added objects:", added);
           console.log("Removed objects:", removed);
+      - name: Print Values
+        run: |
+          echo ${steps.compare-files.outputs.added}
+          echo ${steps.compare-files.outputs.removed}
       - name: Display welcome message
         if: ${{ steps.compare-files.outputs.added == 'true' }}
         run: echo "Welcome!"
       - name: Display goodbye message
         if: ${{ steps.compare-files.outputs.removed == 'true' }}
-        run: echo "Welcome!"
+        run: echo "Goodbye!"
 
 
