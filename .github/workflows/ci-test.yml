@@ -1,10 +1,15 @@
 # PRINT IT ON PR ITSELF 
 name: Welcome New Contributor
 on:
+  push: 
+    branches: 
+      -main
+
   pull_request:
-    types: [ opened, closed]
-    # paths:
-    #   - 'TSC_MEMBERS.json' 
+    branches: 
+      - main
+    paths:
+      - 'config/**' 
 
 jobs:
   welcome:
