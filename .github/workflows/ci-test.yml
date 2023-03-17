@@ -2,7 +2,7 @@
 name: Welcome New Contributor
 on:
   pull_request:
-    types: [closed, opened]
+    types: [ opened, closed]
     paths:
       - 'TSC_MEMBERS.json' 
 
