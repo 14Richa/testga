@@ -9,11 +9,9 @@ on:
     branches: 
       - main
     paths:
-      - 'config/**' 
-
+      - 'config/**'
 jobs:
   welcome:
-    # if: github.event.pull_request.merged && github.event.pull_request.user.login != github.event.repository.owner.login
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -26,9 +24,7 @@ jobs:
           path: parentRepo1
       - name: Run script
         run: | 
-          cd parentRepo1
-          ls 
-
+          tree .
        
 
 
