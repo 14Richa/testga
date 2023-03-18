@@ -1,0 +1,36 @@
+name: Check PR opener name and add comment
+
+on:
+  pull_request:
+    types: [opened]
+
+jobs:
+  check_opener_and_comment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check PR opener name
+        uses: actions/github-script@v5
+        with:
+          script: |
+            const prNumber = context.payload.pull_request.number;
+            const prOpener = context.payload.pull_request.user.login;
+            console.log(`PR #${prNumber} was opened by ${prOpener}.`);
+            return prOpener;
+        id: get_opener_username
+
+      - name: Comment on PR with opener name
+        uses: actions/github-script@v5
+        with:
+          script: |
+            const prNumber = context.payload.pull_request.number;
+            const prOpener = context.payload.pull_request.user.login;
+            const commentBody = `This PR was opened by ${prOpener}.`;
+            const octokit = github.getOctokit(${{ secrets.GITHUB_TOKEN }});
+            await octokit.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              body: commentBody
+            });
+        env:
+          GITHUB_TOKEN: ${{ secrets.TEST_SECRET_TOKEN }}
