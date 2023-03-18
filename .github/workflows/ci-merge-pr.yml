@@ -1,22 +1,22 @@
-name: Merge Pull Request
+name: Auto-merge pull request
 on:
   pull_request:
-    types: [opened]
+    types: [opened, reopened]
 jobs:
-  merge:
+  auto_merge:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Check if PR creator is owner
-        id: check
-        run: |
-          echo "::set-output name=creator::$(jq -r .pull_request.user.login $GITHUB_EVENT_PATH)"
+      - name: Check if pull request author is owner
+        if: github.event.pull_request.user.login == github.repository_owner
+        run: echo "Pull request opened by owner."
+      - name: Merge pull request
+        if: github.event.pull_request.user.login == github.repository_owner
+        uses: octokit/request-action@v2.x
+        with:
+          route: PUT /repos/:owner/:repo/pulls/:pull_number/merge
+          owner: ${{ github.repository_owner }}
+          repo: ${{ github.repository }}
+          pull_number: ${{ github.event.pull_request.number }}
+          merge_method: squash
         env:
           GITHUB_TOKEN: ${{ secrets.TEST_SECRET_TOKEN }}
-      - name: Merge Pull Request
-        if: ${{ steps.check.outputs.creator == github.repository_owner }}
-        uses: peter-evans/merge-pull-request-action@v1.1.0
-        with:
-          github-token: ${{ secrets.TEST_SECRET_TOKEN }}
-          merge-method: merge
