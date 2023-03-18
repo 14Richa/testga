@@ -1,22 +1,19 @@
 name: Auto-merge pull request
+
 on:
   pull_request:
     types: [opened, reopened]
+
 jobs:
   auto_merge:
     runs-on: ubuntu-latest
     steps:
       - name: Check if pull request author is owner
         if: github.event.pull_request.user.login == github.repository_owner
-        run: echo "Pull request opened by owner."
-      - name: Merge pull request
-        if: github.event.pull_request.user.login == github.repository_owner
-        uses: octokit/request-action@v2.x
-        with:
-          route: PUT /repos/:owner/:repo/pulls/:pull_number/merge
-          owner: ${{ github.repository_owner }}
-          repo: ${{ github.repository }}
-          pull_number: ${{ github.event.pull_request.number }}
-          merge_method: squash
-        env:
-          GITHUB_TOKEN: ${{ secrets.TEST_SECRET_TOKEN }}
+        run: |
+          echo "Pull request opened by owner."
+          curl -XPUT \
+            -H "Authorization: token ${{ secrets.TEST_SECRET_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            -d '{"merge_method":"squash"}' \
+            "https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/merge"
