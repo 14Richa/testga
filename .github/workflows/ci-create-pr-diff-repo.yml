@@ -15,7 +15,7 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3.7.0
         with:
-          token: ${{ secrets.PARENT_REPO_TOKEN}}
+          token: ${{ secrets.TEST_SECRET_TOKEN}}
           commit-message: Automated PR creation
           title: New Pull Request
           body: This is a new pull request created by the GitHub Action.
