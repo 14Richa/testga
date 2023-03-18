@@ -1,19 +1,17 @@
-name: Check PR opener name and add comment
+name: Get PR owner's name
 
 on:
   pull_request:
     types: [opened]
 
 jobs:
-  check_opener_and_comment:
+  get_owner_name:
     runs-on: ubuntu-latest
     steps:
-      - name: Check PR opener name
+      - name: Get PR owner's name
         uses: actions/github-script@v5
         with:
           script: |
-            const prNumber = context.payload.pull_request.number;
-            const prOpener = context.payload.pull_request.user.login;
-            console.log(`PR #${prNumber} was opened by ${prOpener}.`);
-            return prOpener;
-        id: get_opener_username
+            const ownerName = context.payload.pull_request.user.login;
+            console.log(`This PR is owned by ${ownerName}.`);
+            return ownerName
