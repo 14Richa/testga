@@ -1,0 +1,22 @@
+name: Merge Pull Request
+on:
+  pull_request:
+    types: [opened]
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Check if PR creator is owner
+        id: check
+        run: |
+          echo "::set-output name=creator::$(jq -r .pull_request.user.login $GITHUB_EVENT_PATH)"
+        env:
+          GITHUB_TOKEN: ${{ secrets.TEST_SECRET_TOKEN }}
+      - name: Merge Pull Request
+        if: ${{ steps.check.outputs.creator == github.repository_owner }}
+        uses: peter-evans/merge-pull-request-action@v1.1.0
+        with:
+          github-token: ${{ secrets.TEST_SECRET_TOKEN }}
+          merge-method: merge
