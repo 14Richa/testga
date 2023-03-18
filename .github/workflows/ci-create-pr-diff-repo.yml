@@ -20,6 +20,6 @@ jobs:
           title: New Pull Request
           body: This is a new pull request created by the GitHub Action.
           branch: my-branch
-          base: main
+          base: master
           repository: 14Richa/parentRepo1
 
