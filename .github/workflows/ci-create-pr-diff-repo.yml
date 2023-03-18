@@ -1,0 +1,34 @@
+name: Create Pull Request
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  GITHUB_TOKEN: ${{secrets.TEST_SECRET_TOKEN}}
+
+jobs:
+  create-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          repository: 14Richa/parentRepo1 
+          ref: main
+      - name: Create Pull Request
+        uses: actions/github-script@v4
+        with:
+          script: |
+            const { data: pullRequest } = await github.pulls.create({
+              owner: '14Richa',
+              repo: 'parentRepo1 ',
+              title: 'New Pull Request',
+              body: 'This is a new pull request created by action of github.',
+              head: 'my-branch',
+              base: 'main'
+            });
+            console.log(`Created pull request ${pullRequest.number}.`);
+        env:
+          GITHUB_TOKEN: ${{ secrets.TEST_SECRET_TOKEN}}}
