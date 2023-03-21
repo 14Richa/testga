@@ -1,17 +1,17 @@
-# name: Get PR owner's name
+name: Get PR owner's name
 
-# on:
-#   pull_request:
-#     types: [opened]
+on:
+  pull_request:
+    types: [opened]
 
-# jobs:
-#   get_owner_name:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Get PR owner's name
-#         uses: actions/github-script@v5
-#         with:
-#           script: |
-#             const ownerName = context.payload.pull_request.user.login;
-#             console.log(`This PR is owned by ${ownerName}.`);
-#             return ownerName
+jobs:
+  get_owner_name:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get PR owner's name
+        uses: actions/github-script@v5
+        with:
+          script: |
+            const ownerName = context.payload.pull_request.user.login;
+            console.log(`This PR is owned by ${ownerName}.`);
+            return ownerName
